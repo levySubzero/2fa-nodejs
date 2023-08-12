@@ -138,12 +138,12 @@ const VerifyOTP = async (req: Request, res: Response) => {
 
     let totp = new OTPAuth.TOTP({
       issuer: "codevoweb.com",
-      label: "CodevoWeb",
+      label: "Webflix",
       algorithm: "SHA1",
       digits: 6,
       period: 15,
       secret: user.otp_base32!,
-    });
+    }); 
 
     let delta = totp.validate({ token });
 
@@ -159,7 +159,7 @@ const VerifyOTP = async (req: Request, res: Response) => {
       data: {
         otp_enabled: true,
         otp_verified: true,
-      },
+      }, 
     });
 
     res.status(200).json({
@@ -193,7 +193,7 @@ const ValidateOTP = async (req: Request, res: Response) => {
     }
     let totp = new OTPAuth.TOTP({
       issuer: "codevoweb.com",
-      label: "CodevoWeb",
+      label: "Webflix",
       algorithm: "SHA1",
       digits: 6,
       period: 15,
