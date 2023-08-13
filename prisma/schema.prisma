@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["mongodb"]
 }
 
 datasource db {
@@ -28,8 +29,6 @@ model User {
   otp_hex      String?
   otp_base32   String?
   otp_auth_url String?
-
-  @@map(name: "users")
 }
 
 model Account {
@@ -66,4 +65,10 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Genre {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
 }

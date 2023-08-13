@@ -80,8 +80,9 @@ const generateRandomBase32 = () => {
 const GenerateOTP = async (req: Request, res: Response) => {
   try {
     const { user_id } = req.body;
-
-    const user = await prisma.user.findUnique({ where: { id: user_id } });
+    await prisma.$connect();
+    console.log('Connected to the database');
+    const user = await prisma.user.findUnique({ where: { id: user_id as string } });
 
     if (!user) {
       return res.status(404).json({
@@ -94,7 +95,7 @@ const GenerateOTP = async (req: Request, res: Response) => {
 
     let totp = new OTPAuth.TOTP({
       issuer: "codevoweb.com",
-      label: "CodevoWeb",
+      label: "Webflix",
       algorithm: "SHA1",
       digits: 6,
       period: 15,

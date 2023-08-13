@@ -17,6 +17,7 @@ async function main() {
     })
   );
   app.use(express.json());
+  
 
   //   Health Checker
   app.get("/api/healthchecker", (req: Request, res: Response) => {
@@ -44,6 +45,7 @@ async function main() {
 main()
   .then(async () => {
     await prisma.$disconnect();
+    console.log('Disconnected to the database');
   })
   .catch(async (e) => {
     console.error(e);
