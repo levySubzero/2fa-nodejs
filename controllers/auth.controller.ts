@@ -257,6 +257,42 @@ const DisableOTP = async (req: Request, res: Response) => {
   }
 };
 
+const LogoutUser = async (req: Request, res: Response) => {
+  try {
+    const { user_id } = req.body;
+    console.log("love me")
+    const user = await prisma.user.findUnique({ where: { id: user_id } });
+    if (!user) {
+      return res.status(401).json({
+        status: "fail",
+        message: "User doesn't exist",
+      });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: user_id },
+      data: {
+        otp_verified: false,
+      },
+    });
+
+    res.status(200).json({
+      otp_disabled: true,
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        otp_verified: updatedUser.otp_verified,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
 export default {
   RegisterUser,
   LoginUser,
@@ -264,4 +300,5 @@ export default {
   VerifyOTP,
   ValidateOTP,
   DisableOTP,
+  LogoutUser
 };
