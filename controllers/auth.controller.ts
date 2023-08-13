@@ -5,41 +5,41 @@ import { prisma } from "../server";
 import * as OTPAuth from "otpauth";
 import { encode } from "hi-base32";
 
-const RegisterUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { name, email, password } = req.body;
+// const RegisterUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const { name, email, password } = req.body;
 
-    await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: crypto.createHash("sha256").update(password).digest("hex"),
-      },
-    });
+//     await prisma.user.create({
+//       data: {
+//         name,
+//         email,
+//         password: crypto.createHash("sha256").update(password).digest("hex"),
+//       },
+//     });
 
-    res.status(201).json({
-      status: "success",
-      message: "Registered successfully, please login",
-    });
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        return res.status(409).json({
-          status: "fail",
-          message: "Email already exist, please use another email address",
-        });
-      }
-    }
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
-  }
-};
+//     res.status(201).json({
+//       status: "success",
+//       message: "Registered successfully, please login",
+//     });
+//   } catch (error) {
+//     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+//       if (error.code === "P2002") {
+//         return res.status(409).json({
+//           status: "fail",
+//           message: "Email already exist, please use another email address",
+//         });
+//       }
+//     }
+//     res.status(500).json({
+//       status: "error",
+//       message: error.message,
+//     });
+//   }
+// };
 
 const LoginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -181,8 +181,10 @@ const VerifyOTP = async (req: Request, res: Response) => {
 };
 
 const ValidateOTP = async (req: Request, res: Response) => {
+
   try {
     const { user_id, token } = req.body;
+    console.log({ user_id, token })
     const user = await prisma.user.findUnique({ where: { id: user_id } });
 
     const message = "Token is invalid or user doesn't exist";
@@ -294,7 +296,7 @@ const LogoutUser = async (req: Request, res: Response) => {
 };
 
 export default {
-  RegisterUser,
+  // RegisterUser,
   LoginUser,
   GenerateOTP,
   VerifyOTP,

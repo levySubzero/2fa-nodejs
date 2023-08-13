@@ -3,7 +3,7 @@ import authController from "../controllers/auth.controller";
 
 const router = express.Router();
 
-router.post("/register", authController.RegisterUser);
+// router.post("/register", authController.RegisterUser);
 router.post("/login", authController.LoginUser);
 router.post("/otp/generate", authController.GenerateOTP);
 router.post("/otp/verify", authController.VerifyOTP);
